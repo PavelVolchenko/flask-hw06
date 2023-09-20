@@ -1,35 +1,75 @@
 import uuid
 from typing import Optional
 from pydantic import BaseModel, Field
+from bson import ObjectId
+
+
+class PyObjectId(ObjectId):
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate
+
+    @classmethod
+    def validate(cls, v):
+        if not ObjectId.is_valid(v):
+            raise ValueError("Invalid ObjectId")
+        return ObjectId(v)
+
+    @classmethod
+    def __get_pydantic_json_schema__(cls, field_schema):
+        field_schema.update(type="string")
 
 
 class Item(BaseModel):
-    id: str = Field(default_factory=uuid.uuid4, alias="_id")
+    # id: ObjectId = Field(default_factory=PyObjectId, alias="_id")
     title: str = Field(default="Fill in title")
     description: str = Field(default="Fill in description")
-    price: float = Field(default=0)
+    price: int = Field(default=0)
     is_del: bool = Field(default=False)
 
     class Config:
         populate_by_name = True
         arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
 
         json_schema_extra = {
             "example": {
-                "_id": "066de609-b04a-4b30-b46c-32537c7f1f6e",
                 "title": "Some Title Text About Item",
                 "description": "A lot of text describable a some properties and characteristics abot item.",
                 "price": 2500,
-                "is_del": False,
+                "is_del": 0,
             }
         }
-#
+
+
+class ItemResponse(BaseModel):
+    id: ObjectId = Field(default_factory=PyObjectId, alias="_id")
+    title: str = Field(default="Fill in title")
+    description: str = Field(default="Fill in description")
+    price: int = Field(default=0)
+    # is_del: bool = Field(default=False)
+
+    class Config:
+        populate_by_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+
+        json_schema_extra = {
+            "example": {
+                "_id": "650ae2230d866b3c0390d626",
+                "title": "Some Title Text About Item",
+                "description": "A lot of text describable a some properties and characteristics abot item.",
+                "price": 2500,
+                # "is_del": 1,
+            }
+        }
+
 
 class ItemUpdate(BaseModel):
-    title: Optional[str]
-    description: Optional[str]
-    price: Optional[float]
-    is_del: Optional[bool]
+    title: Optional[str] = None
+    description: Optional[str] = None
+    price: Optional[int] = None
+    is_del: Optional[bool] = None
 
     class Config:
         json_schema_extra = {
@@ -37,6 +77,6 @@ class ItemUpdate(BaseModel):
                 "title": "Some Title Text About Item",
                 "description": "A lot of text describable a some properties and characteristics abot item.",
                 "price": 2500,
-                "is_del": False,
+                "is_del": 0,
             }
         }

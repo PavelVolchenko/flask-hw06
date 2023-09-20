@@ -2,10 +2,15 @@ from fastapi import FastAPI
 from dotenv import dotenv_values
 from pymongo import MongoClient
 from routes import router as items_router
+from fastapi.staticfiles import StaticFiles
+
 
 config = dotenv_values(".env")
 
 app = FastAPI()
+app.include_router(items_router, tags=["items"], prefix="/items")
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 
 @app.on_event("startup")
 def startup_db_client():
@@ -18,7 +23,6 @@ def shutdown_db_client():
     app.mongodb_client.close()
 
 
-app.include_router(items_router, tags=["items"], prefix="/items")
 
 
 
