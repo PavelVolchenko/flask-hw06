@@ -22,7 +22,12 @@
               </div>
               <div class="card-footer d-grid gap-2 d-md-flex justify-content-md-end">
                 <a href="{{ item._id }}" class="btn btn-success">Изменить карточку</a>
-                <button class="btn btn-primary">{{ item.price }} руб.</button>
+                <form>
+                  <button type="submit" formmethod="POST" class="btn btn-primary" formaction="{{ item._id }}">{{ item.price }} руб.</button>
+                </form>
+                <form method="POST">
+                <button type="submit" class="btn btn-success" formaction="{{ item._id }}">Удалить</button>
+                </form>
               </div>
             </div>
           </div>

@@ -1,4 +1,3 @@
-import uuid
 from typing import Optional
 from pydantic import BaseModel, Field
 from bson import ObjectId
@@ -34,8 +33,8 @@ class Item(BaseModel):
 
         json_schema_extra = {
             "example": {
-                "title": "Some Title Text About Item",
-                "description": "A lot of text describable a some properties and characteristics abot item.",
+                "title": "Title Item",
+                "description": "Text describable abot item.",
                 "price": 2500,
                 "is_del": 0,
             }
@@ -57,8 +56,8 @@ class ItemResponse(BaseModel):
         json_schema_extra = {
             "example": {
                 "_id": "650ae2230d866b3c0390d626",
-                "title": "Some Title Text About Item",
-                "description": "A lot of text describable a some properties and characteristics abot item.",
+                "title": "Item",
+                "description": "Describable item.",
                 "price": 2500,
                 # "is_del": 1,
             }
@@ -80,3 +79,37 @@ class ItemUpdate(BaseModel):
                 "is_del": 0,
             }
         }
+
+
+class User(BaseModel):
+    username: str
+    email: str
+    password: str
+
+    class Config:
+        populate_by_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+
+
+class UserResponse(BaseModel):
+    # id: ObjectId = Field(default_factory=PyObjectId, alias="_id")
+    username: str
+    email: str
+    password: str
+
+    class Config:
+        populate_by_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+
+
+class UserUpdate(BaseModel):
+    username: Optional[str] = None
+    email: Optional[str] = None
+    password: Optional[str] = None
+
+
+class LoginForm(BaseModel):
+    email: str
+    password: str

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{ super() }} - {{ title }}
+{% endblock %}
+
+{% block content %}
+  <div class="container p-4 col-md-6">
+
+    <form>
+
+      <div class="col p-4 text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3">
+
+        <div class="m-2">
+          <label for="username" class="form-label">Имя пользователя</label>
+          <input type="text" class="form-control" id="username" name="username">
+          <label for="email" class="form-label">Адрес электронной почты</label>
+          <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp">
+        </div>
+        <div class="m-2">
+          <label for="password" class="form-label">Пароль</label>
+          <input type="password" class="form-control" id="password" name="password">
+          <label for="re_password" class="form-label">Повторите пароль</label>
+          <input type="password" class="form-control" id="re_password" name="re_password">
+          <div id="passwordHelpBlock" class="form-text">
+            Ваш пароль должен состоять из 8-20 символов, содержать буквы и цифры и не должен содержать пробелов,
+            специальных символов или эмодзи.
+          </div>
+        </div>
+        <div class="col md-auto">
+          <button type="submit" class="btn btn-primary" formmethod="POST" formaction="{{ url_for('form') }}">Зарегистрироваться</button>
+        </div>
+
+
+{#        <input type="submit" value="Отправить" formaction="{{ url_for('user_register') }}" formmethod="post">#}
+      </div>
+    </form>
+  </div>
+{% endblock %}
