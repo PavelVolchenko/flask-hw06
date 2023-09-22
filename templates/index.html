@@ -18,17 +18,15 @@
                 <div class="card-body">
                   <h5 class="card-title">{{ item.title }}</h5>
                   <p class="card-text">{{ item.description }}</p>
+                  <p class="card-text text-primary fs-3"><b>{{ item.price }} р.</b></p>
                 </div>
               </div>
               <div class="card-footer d-grid gap-2 d-md-flex justify-content-md-end">
-                <a href="{{ item._id }}" class="btn btn-success">Изменить карточку</a>
+                <a href="{{ url_for('find_item', id=item._id) }}" class="btn btn-success">Страница товара</a>
                 <form>
-                  <button type="submit" formmethod="POST" class="btn btn-primary"
-                          formaction="{{ item._id }}">{{ item.price }} руб.
+                  <button type="submit" formmethod="POST" class="btn btn-success"
+                          formaction="{{ url_for('do_order_item', id=item._id) }}">Заказать
                   </button>
-                </form>
-                <form method="POST">
-                  <button type="submit" class="btn btn-success" formaction="{{ item._id }}">Удалить</button>
                 </form>
               </div>
             </div>

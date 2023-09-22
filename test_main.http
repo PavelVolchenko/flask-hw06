@@ -5,24 +5,28 @@ Accept: application/json
 
 ###
 
-POST http://127.0.0.1:8000/items/
+GET http://127.0.0.1:8000/items
 accept: application/json
 Content-Type: application/json
 
+###
+
+POST http://127.0.0.1:8000/items/
+accept: application/json
+Content-Type: application/json
 {
-  "title": "Заголовок товара",
-  "description": "Описание товара. Расширенная версия. Теги. Контакты. Подписи.",
-  "price": 10000
+  "title": "Название товара",
+  "description": "Описание товара.",
+  "price": 100
 }
 
 ###
 
-PUT http://127.0.0.1:8000/items/650d4894c2fdac61fa88f506
+PUT http://127.0.0.1:8000/items/650aec25c4be8c8950481fe2
 accept: application/json
 Content-Type: application/json
-
 {
-  "price": 10
+  "price": 1185
 }
 
 ###
@@ -39,22 +43,27 @@ Content-Type: application/json
 
 ###
 
+#@no-cookie-jar
 POST http://127.0.0.1:8000/items
 accept: application/json
 Content-Type: application/json
-
 {
   "title": "Blu-ray",
   "description": "Blu-ray disk. UFC 2024 for PS5",
-  "price": 15,
+  "price": 15
 }
+
+###
+
+GET http://127.0.0.1:8000/users
+accept: application/json
+Content-Type: application/json
 
 ###
 
 POST http://127.0.0.1:8000/users/register/
 accept: application/json
 Content-Type: application/json
-
 {
   "username": "UniquePerson",
   "email": "unique-person@example.com"
@@ -65,7 +74,6 @@ Content-Type: application/json
 PUT http://127.0.0.1:8000/users/123
 accept: application/json
 Content-Type: application/json
-
 {
   "username": "A111222",
   "email": "ABCABCABCABC@adminadmin.com"
@@ -78,3 +86,16 @@ accept: application/json
 Content-Type: application/json
 
 ###
+
+GET http://127.0.0.1:8000/orders/api
+accept: application/json
+Content-Type: application/json
+
+###
+
+POST http://127.0.0.1:8000/orders/
+accept: application/json
+Content-Type: application/json
+{
+  "username": "123",
+}

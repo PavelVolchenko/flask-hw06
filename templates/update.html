@@ -16,10 +16,15 @@
             <div class="card-body">
               <h5 class="card-title">{{ item.title }}</h5>
               <p class="card-text">{{ item.description }}</p>
+              <p class="card-text text-primary fs-3"><b>{{ item.price }} р.</b></p>
             </div>
           </div>
           <div class="card-footer d-grid gap-2 d-md-flex justify-content-md-end">
-              <button class="btn btn-primary">{{ item.price }} руб.</button>
+            <form>
+              <button type="submit" formmethod="POST" class="btn btn-success"
+                      formaction="{{ item._id }}">Заказать
+              </button>
+            </form>
           </div>
         </div>
       </div>

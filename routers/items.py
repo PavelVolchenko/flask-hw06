@@ -12,10 +12,13 @@ templates = Jinja2Templates(directory="templates")
 router = APIRouter()
 
 
-@router.get("/", response_class=HTMLResponse, response_model=List[ItemResponse])
-async def list_item(request: Request):
+@router.get("/",
+            # response_class=HTMLResponse,
+            response_model=List[ItemResponse])
+def list_items(request: Request):
     items = list(request.app.database["items"].find(limit=100))
-    return templates.TemplateResponse("index.html", {"request": request, "items": items})
+    return items
+    # return templates.TemplateResponse("index.html", {"request": request, "items": items})
 
 
 @router.get("/{id}", response_class=HTMLResponse, response_model=ItemResponse)
@@ -34,11 +37,14 @@ async def create_item(request: Request, item: Item = Body(...)):
 
 
 @router.post("/{id}", response_class=RedirectResponse, status_code=302)
-async def list_item(id: str, request: Request):
-    request.app.database["orders"].insert_one({"item_id": id,
-                                               "username": request.cookies.get("username"),
-                                               "time": datetime.now()})
-    return "/"
+async def do_order_item(id: str, request: Request):
+    if username := request.cookies.get("username"):
+        request.app.database["orders"].insert_one({"item_id": id,
+                                                   "username": username,
+                                                   # "time": datetime.now(),
+                                                   })
+        return "/"
+    return "/users/login"
 
 
 @router.put("/{id}", response_model=ItemResponse)

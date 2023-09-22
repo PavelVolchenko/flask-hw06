@@ -1,4 +1,4 @@
-from typing import Annotated
+from typing import Annotated, List
 from fastapi import APIRouter, Request, Form, Response, Body, status, HTTPException
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
@@ -9,23 +9,18 @@ templates = Jinja2Templates(directory="templates")
 router = APIRouter()
 
 
-@router.get("/login/", response_class=HTMLResponse)
-async def login(request: Request):
-    return templates.TemplateResponse("login.html", {"request": request})
+@router.get("/", response_model=List[UserResponse])
+async def users_list(request: Request):
+    users = list(request.app.database["users"].find(limit=100))
+    return users
 
 
-@router.post("/login/", response_class=RedirectResponse, status_code=302)
-async def login(username: Annotated[str, Form()], password: Annotated[str, Form()], response: Response):
-    response.set_cookie(key="username", value=username)
-    return "/"
-
-
-@router.get("/register/", response_class=HTMLResponse)
+@router.get("/register", response_class=HTMLResponse)
 async def register(request: Request):
     return templates.TemplateResponse("register.html", {"request": request})
 
 
-@router.post("/register/", status_code=status.HTTP_201_CREATED, response_model=UserResponse)
+@router.post("/register", status_code=status.HTTP_201_CREATED, response_model=UserResponse)
 async def register(request: Request, user: User = Body(...)):
     user = jsonable_encoder(user)
     new_user = request.app.database["users"].insert_one(user)
@@ -33,7 +28,7 @@ async def register(request: Request, user: User = Body(...)):
     return created_user
 
 
-@router.post("/register/form/", response_class=RedirectResponse, status_code=302)
+@router.post("/register/form", response_class=RedirectResponse, status_code=302)
 async def form(username: Annotated[str, Form()], email: Annotated[str, Form()], password: Annotated[str, Form()],
                response: Response, request: Request):
     response.set_cookie(key="username", value=username)
@@ -62,7 +57,18 @@ async def delete_item(username: str, request: Request, response: Response):
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User {username} not found")
 
 
-@router.get("/logout/", response_class=RedirectResponse, status_code=302)
+@router.get("/login", response_class=HTMLResponse)
+async def login(request: Request):
+    return templates.TemplateResponse("login.html", {"request": request})
+
+
+@router.post("/login", response_class=RedirectResponse, status_code=302)
+async def login(username: Annotated[str, Form()], password: Annotated[str, Form()], response: Response):
+    response.set_cookie(key="username", value=username)
+    return "/"
+
+
+@router.get("/logout", response_class=RedirectResponse, status_code=302)
 async def logout(response: Response):
     response.delete_cookie(key="username")
     return "/"
