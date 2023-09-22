@@ -13,13 +13,6 @@ app.include_router(orders.router, tags=["orders"], prefix="/orders")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
-# @app.middleware("http")
-# async def add_cookies_header(request: Request,  call_next):
-#     print("Middleware")
-#     response = await call_next(request)
-#     return response
-
-
 @app.get("/", response_class=RedirectResponse, status_code=302)
 async def index():
     return "/items"

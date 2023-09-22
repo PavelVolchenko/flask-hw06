@@ -20,7 +20,6 @@ class PyObjectId(ObjectId):
 
 
 class Item(BaseModel):
-    # id: ObjectId = Field(default_factory=PyObjectId, alias="_id")
     title: str = Field(default="Fill in title")
     description: str = Field(default="Fill in description")
     price: int = Field(default=0)
@@ -30,7 +29,6 @@ class Item(BaseModel):
         populate_by_name = True
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
-
         json_schema_extra = {
             "example": {
                 "title": "Title Item",
@@ -46,20 +44,17 @@ class ItemResponse(BaseModel):
     title: str = Field(default="Fill in title")
     description: str = Field(default="Fill in description")
     price: int = Field(default=0)
-    # is_del: bool = Field(default=False)
 
     class Config:
         populate_by_name = True
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
-
         json_schema_extra = {
             "example": {
                 "_id": "650ae2230d866b3c0390d626",
                 "title": "Item",
                 "description": "Describable item.",
                 "price": 2500,
-                # "is_del": 1,
             }
         }
 
@@ -93,7 +88,6 @@ class User(BaseModel):
 
 
 class UserResponse(BaseModel):
-    # id: ObjectId = Field(default_factory=PyObjectId, alias="_id")
     username: str
     email: str
     password: str
@@ -109,7 +103,3 @@ class UserUpdate(BaseModel):
     email: Optional[str] = None
     password: Optional[str] = None
 
-
-class LoginForm(BaseModel):
-    email: str
-    password: str

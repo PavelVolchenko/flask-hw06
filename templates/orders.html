@@ -2,28 +2,26 @@
 
 
 {% block content %}
-<div class="container md-6">
-
-  <table class="table">
-    <thead>
-    <tr>
-      <th scope="col">Order ID</th>
-      <th scope="col">Item ID</th>
-      <th scope="col">User</th>
-      <th scope="col">Order Time</th>
-    </tr>
-    </thead>
-    {% for order in orders %}
-      <tbody>
+  <div class="container md-6">
+    <table class="table">
+      <thead>
       <tr>
-        <td>{{ order._id }}</td>
-        <td>{{ order.item_id }}</td>
-        <td>{{ order.username }}</td>
-        <td>{{ order.time }}</td>
+        <th scope="col">Order ID</th>
+        <th scope="col">Item ID</th>
+        <th scope="col">User</th>
+        <th scope="col">Order Time</th>
       </tr>
-      </tbody>
-    {% endfor %}
-  </table>
-
-</div>
+      </thead>
+      {% for order in orders %}
+        <tbody>
+        <tr>
+          <td>{{ order._id }}</td>
+          <td>{{ order.item_id }}</td>
+          <td>{{ order.username }}</td>
+          <td>{{ order.time }}</td>
+        </tr>
+        </tbody>
+      {% endfor %}
+    </table>
+  </div>
 {% endblock %}

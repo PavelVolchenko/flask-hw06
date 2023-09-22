@@ -1,8 +1,4 @@
-/test_main.http
-/sem6.py
-/mongomodel.py
-/modelsSQLite.py
-/app.py
 /.idea/
 /.env
 /__pycache__/
+/test_items_crud.py

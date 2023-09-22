@@ -6,11 +6,8 @@
 
 {% block content %}
   <div class="container p-4 col-md-6">
-
     <form>
-
       <div class="col p-4 text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3">
-
         <div class="m-2">
           <label for="username" class="form-label">Имя пользователя</label>
           <input type="text" class="form-control" id="username" name="username">
@@ -28,11 +25,10 @@
           </div>
         </div>
         <div class="col md-auto">
-          <button type="submit" class="btn btn-primary" formmethod="POST" formaction="{{ url_for('form') }}">Зарегистрироваться</button>
+          <button type="submit" class="btn btn-primary" formmethod="POST" formaction="{{ url_for('form') }}">
+            Зарегистрироваться
+          </button>
         </div>
-
-
-{#        <input type="submit" value="Отправить" formaction="{{ url_for('user_register') }}" formmethod="post">#}
       </div>
     </form>
   </div>
