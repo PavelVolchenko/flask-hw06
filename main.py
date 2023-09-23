@@ -4,10 +4,10 @@ from pymongo import MongoClient
 from fastapi.responses import RedirectResponse, HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from routers import users, items, orders
-from routers.items import list_items
+from routers.items import items_list
 from fastapi.templating import Jinja2Templates
 from typing import List
-from models import ItemResponse
+from models import Item
 
 config = dotenv_values(".env")
 app = FastAPI()
@@ -18,9 +18,9 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 
-@app.get("/", response_class=HTMLResponse, response_model=List[ItemResponse])
+@app.get("/", response_class=HTMLResponse, response_model=List[Item])
 async def index(request: Request):
-    items = list_items(request)
+    items = items_list(request)
     return templates.TemplateResponse("index.html", {"request": request, "items": items})
 
 

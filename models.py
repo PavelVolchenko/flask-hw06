@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 from pydantic import BaseModel, Field
 from bson import ObjectId
 from datetime import datetime
@@ -21,10 +21,11 @@ class PyObjectId(ObjectId):
 
 
 class Item(BaseModel):
-    title: str = Field(default="Title")
-    description: str = Field(default="Description")
-    price: int = Field(default=0)
-    is_del: bool = Field(default=False)
+    id: Union[ObjectId, str, None] = Field(default_factory=PyObjectId, alias="_id")
+    title: Union[str, None] = None
+    description: Union[str, None] = None
+    price: Union[int, None] = None
+    is_del: Union[bool, None] = False
 
     class Config:
         populate_by_name = True
@@ -40,64 +41,32 @@ class Item(BaseModel):
         }
 
 
-class ItemResponse(Item):
-    id: ObjectId = Field(default_factory=PyObjectId, alias="_id")
+class User(BaseModel):
+    username: str
+    email: Union[str, None] = None
+    password: Union[str, None] = None
+
+    # class Config:
+    #     populate_by_name = True
+    #     arbitrary_types_allowed = True
 
 
-# class ItemResponse(BaseModel):
+# class UserResponse(BaseModel):
 #     id: ObjectId = Field(default_factory=PyObjectId, alias="_id")
-#     title: str = Field(default="Fill in title")
-#     description: str = Field(default="Fill in description")
-#     price: int = Field(default=0)
+#     username: str
+#     email: str
+#     password: str
 #
 #     class Config:
 #         populate_by_name = True
 #         arbitrary_types_allowed = True
 #         json_encoders = {ObjectId: str}
-#         json_schema_extra = {
-#             "example": {
-#                 "_id": "650ae2230d866b3c0390d626",
-#                 "title": "Item",
-#                 "description": "Describable item.",
-#                 "price": 2500,
-#             }
-#         }
-
-
-class ItemUpdate(Item):
-    title: Optional[str] = None
-    description: Optional[str] = None
-    price: Optional[int] = None
-    is_del: Optional[bool] = None
-
-
-class User(BaseModel):
-    username: str
-    email: str
-    password: str
-
-    class Config:
-        populate_by_name = True
-        arbitrary_types_allowed = True
-        json_encoders = {ObjectId: str}
-
-
-class UserResponse(BaseModel):
-    id: ObjectId = Field(default_factory=PyObjectId, alias="_id")
-    username: str
-    email: str
-    password: str
-
-    class Config:
-        populate_by_name = True
-        arbitrary_types_allowed = True
-        json_encoders = {ObjectId: str}
-
-
-class UserUpdate(BaseModel):
-    username: Optional[str] = None
-    email: Optional[str] = None
-    password: Optional[str] = None
+#
+#
+# class UserUpdate(BaseModel):
+#     username: Optional[str] = None
+#     email: Optional[str] = None
+#     password: Optional[str] = None
 
 
 class Order(BaseModel):

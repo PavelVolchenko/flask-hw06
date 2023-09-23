@@ -4,7 +4,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from typing import List
 from bson import ObjectId
-from models import Item, ItemUpdate, ItemResponse
+from models import Item
 from routers import orders
 from datetime import datetime
 
@@ -12,23 +12,20 @@ templates = Jinja2Templates(directory="templates")
 router = APIRouter()
 
 
-@router.get("/",
-            # response_class=HTMLResponse,
-            response_model=List[ItemResponse])
-def list_items(request: Request):
+@router.get("/", response_model=List[Item])
+def items_list(request: Request):
     items = list(request.app.database["items"].find(limit=100))
     return items
-    # return templates.TemplateResponse("index.html", {"request": request, "items": items})
 
 
-@router.get("/{id}", response_class=HTMLResponse, response_model=ItemResponse)
+@router.get("/{id}", response_class=HTMLResponse, response_model=Item)
 async def find_item(id: str, request: Request):
     if (item := request.app.database["items"].find_one({"_id": ObjectId(id)})) is not None:
         return templates.TemplateResponse("update.html", {"request": request, "item": item})
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Item with ID {id} not found")
 
 
-@router.post("/", response_model=ItemResponse, status_code=201)
+@router.post("/", response_model=Item, status_code=201)
 async def create_item(request: Request, item: Item = Body(...)):
     item = jsonable_encoder(item)
     new_item = request.app.database["items"].insert_one(item)
@@ -47,8 +44,8 @@ async def do_order_item(id: str, request: Request):
     return "/users/login"
 
 
-@router.put("/{id}", response_model=ItemResponse)
-async def update_item(id: str, request: Request, item: ItemUpdate = Body(...)):
+@router.put("/{id}", response_model=Item)
+async def update_item(id: str, request: Request, item: Item = Body(...)):
     item = {k: v for k, v in item.dict().items() if v is not None}
     if len(item) >= 1:
         update_result = request.app.database["items"].update_one({"_id": ObjectId(id)}, {"$set": item})
