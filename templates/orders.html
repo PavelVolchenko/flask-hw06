@@ -2,9 +2,9 @@
 
 
 {% block content %}
-  <div class="container md-6">
-    <table class="table">
-      <thead>
+  <div class="container md-6 p-2">
+    <table class="table table-striped">
+      <thead class="table-dark">
       <tr>
         <th scope="col">Order ID</th>
         <th scope="col">Item ID</th>
@@ -12,16 +12,34 @@
         <th scope="col">Order Time</th>
       </tr>
       </thead>
+        <tbody class="table-group-divider">
       {% for order in orders %}
-        <tbody>
         <tr>
           <td>{{ order._id }}</td>
           <td>{{ order.item_id }}</td>
           <td>{{ order.username }}</td>
           <td>{{ order.time }}</td>
+
+{#            <form action="" method="post">#}
+{#  <fieldset>#}
+{#    <input type="submit" value="save"/>#}
+{#  </fieldset>#}
+{#              <a href="{{ url_for('order_delete', id=order._id) }}" class="btn btn-success">DELETE</a>#}
+{#              <input type="submit" formaction="{{ url_for('delete_order') }}">DELETE#}
+{#</form>#}
+{#              <input formmethod="post" formaction="{{ url_for('order_delete', id=order._id) }}"/>#}
+
+
+            {#            <form>#}
+{#              <button type="submit" class="btn btn-success"#}
+{#              <button type="submit" formmethod="post" class="btn btn-success"#}
+{#                      type="{{ url_for('order_delete', id=order._id) }}">Удалить#}
+{#                      formaction="{{ url_for('order_delete', id=order._id) }}">Удалить#}
+{#              </button>#}
+{#            </form>#}
         </tr>
-        </tbody>
       {% endfor %}
+        </tbody>
     </table>
   </div>
 {% endblock %}

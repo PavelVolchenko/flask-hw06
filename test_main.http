@@ -88,3 +88,17 @@ Content-Type: application/json
 {
   "username": "123"
 }
+
+###
+
+PUT http://127.0.0.1:8000/orders/650e82f6e1837de40d037fa0
+accept: application/json
+Content-Type: application/json
+
+{
+  "item_id": "650aebee477d049a94dab6f6",
+  "username": "BIG"
+}
+
+###
+

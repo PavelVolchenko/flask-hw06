@@ -57,10 +57,12 @@ def test_get_item():
         assert get_book_response.json() == new_book
 
 
+
 def test_get_item_unexisting():
     with TestClient(app) as client:
         get_book_response = client.get("/item/unexisting_id")
         assert get_book_response.status_code == 404
+
 
 
 def test_update_item():

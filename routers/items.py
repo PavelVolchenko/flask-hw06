@@ -33,22 +33,24 @@ async def create_item(request: Request, item: Item = Body(...)):
     return created_item
 
 
-@router.post("/{id}", response_class=RedirectResponse, status_code=302)
-async def do_order_item(id: str, request: Request):
-    if username := request.cookies.get("username"):
-        request.app.database["orders"].insert_one({"item_id": id,
-                                                   "username": username,
-                                                   # "time": datetime.now(),
-                                                   })
-        return "/"
-    return "/users/login"
+
+# @router.post("/{id}", response_class=RedirectResponse, status_code=302)
+# async def do_order_item(id: str, request: Request):
+#     if username := request.cookies.get("username"):
+#         request.app.database["orders"].insert_one({"item_id": id,
+#                                                    "username": username,
+#                                                    # "time": datetime.now(),
+#                                                    })
+#         return "/"
+#     return "/users/login"
+
 
 
 @router.put("/{id}", response_model=Item)
 async def update_item(id: str, request: Request, item: Item = Body(...)):
-    item = {k: v for k, v in item.dict().items() if v is not None}
+    item = {k: v for k, v in item.model_dump().items() if v is not None}
     if len(item) >= 1:
-        update_result = request.app.database["items"].update_one({"_id": ObjectId(id)}, {"$set": item})
+        update_result = request.app.database["items"].update_one({"_id": id}, {"$set": item})
         if update_result.modified_count == 0:
             raise HTTPException(status_code=404, detail=f"Item with ID {id} nothing changed")
     if (existing_item := request.app.database["items"].find_one({"_id": ObjectId(id)})) is not None:

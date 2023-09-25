@@ -22,9 +22,23 @@
           <div class="card-footer d-grid gap-2 d-md-flex justify-content-md-end">
             <form>
               <button type="submit" formmethod="POST" class="btn btn-success"
-                      formaction="{{ item._id }}">Заказать
+                      formaction="{{ url_for('order_create', item_id=item._id) }}">Заказать
               </button>
             </form>
+
+
+            {#            <form>#}
+            {#                    <button type="submit" formmethod="POST" class="btn btn-success"#}
+            {#                            formaction="{{ url_for('do_order', item_id=item._id) }}">Заказать#}
+            {#                    </button>#}
+            {#            </form>#}
+            {##}
+
+            {#            <form>#}
+            {#              <button type="submit" formmethod="POST" class="btn btn-success"#}
+            {#                      formaction="{{ item._id }}">Заказать#}
+            {#              </button>#}
+            {#            </form>#}
           </div>
         </div>
       </div>

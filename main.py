@@ -8,6 +8,10 @@ from routers.items import items_list
 from fastapi.templating import Jinja2Templates
 from typing import List
 from models import Item
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 config = dotenv_values(".env")
 app = FastAPI()
@@ -34,3 +38,6 @@ async def startup_db_client():
 @app.on_event("shutdown")
 async def shutdown_db_client():
     app.mongodb_client.close()
+
+
+

@@ -36,6 +36,7 @@ async def form(username: Annotated[str, Form()], email: Annotated[str, Form()], 
     return "/"
 
 
+
 @router.put("/{username}", response_model=User)
 async def update_user(username: str, request: Request, user: User = Body(...)):
     user = jsonable_encoder(user)

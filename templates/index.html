@@ -23,11 +23,13 @@
               </div>
               <div class="card-footer d-grid gap-2 d-md-flex justify-content-md-end">
                 <a href="{{ url_for('find_item', id=item._id) }}" class="btn btn-success">Страница товара</a>
-                <form>
-                  <button type="submit" formmethod="POST" class="btn btn-success"
-                          formaction="{{ url_for('do_order_item', id=item._id) }}">Заказать
-                  </button>
-                </form>
+                {% if request.cookies.get("username") %}
+                  <form>
+                    <button type="submit" formmethod="POST" class="btn btn-success"
+                            formaction="{{ url_for('order_create', item_id=item._id) }}">Заказать
+                    </button>
+                  </form>
+                {% endif %}
               </div>
             </div>
           </div>
