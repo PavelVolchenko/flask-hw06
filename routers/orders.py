@@ -31,10 +31,12 @@ async def orders_api(request: Request):
     return orders
 
 
-@router.post("/{item_id}", response_class=RedirectResponse, status_code=302)
-async def order_create(item_id: str, request: Request):
+
+@router.post("/{id}", response_class=RedirectResponse, status_code=302)
+async def order_create(id: str, request: Request):
+    logger.debug("\nIncoming request to CREATE a new order")
     new_order = {
-        "item_id": item_id,
+        "item_id": id,
         "username": request.cookies.get('username'),
     }
     logger.debug(f"\nCreate new {type(new_order)} order: {new_order}")
@@ -43,6 +45,24 @@ async def order_create(item_id: str, request: Request):
     request.app.database["orders"].insert_one(order.model_dump())
     logger.debug(f"\nRedirect to orders page {request.cookies.get('username')}")
     return "/orders"
+
+
+#
+#
+# @router.post("/{order_id}{q}")
+# async def order_delete(order_id: str, request: Request):
+#     order_to_delete = {
+#         "item_id": item_id,
+#         "username": request.cookies.get('username'),
+#     }
+#     logger.debug(f"\nCreate new {type(new_order)} order: {new_order}")
+#     order = Order(**new_order)
+#     logger.debug(f"\nSubmit order to {type(order)}")
+#     request.app.database["orders"].insert_one(order.model_dump())
+#     logger.debug(f"\nRedirect to orders page {request.cookies.get('username')}")
+#     return "/orders"
+
+
 
 
 # @router.post("/")

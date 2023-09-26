@@ -39,7 +39,6 @@ class Item(BaseModel):
         }
 
 
-
 class User(BaseModel):
     username: str
     email: str | None = None
@@ -53,8 +52,8 @@ class User(BaseModel):
 
 
 class Order(BaseModel):
-    item_id: str | None
-    username: str | None
+    item_id: str
+    username: str
     id: ObjectId | str | None = Field(default_factory=PyObjectId, alias="_id")
     time: datetime | None = Field(default_factory=datetime.now)
     # time: datetime | None
