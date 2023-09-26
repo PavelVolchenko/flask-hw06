@@ -21,10 +21,9 @@ class PyObjectId(ObjectId):
 
 
 class Item(BaseModel):
-    title: str
+    title: str | None = None
     description: str | None = None
-    price: int
-    id: ObjectId | str | None = Field(default_factory=PyObjectId, alias="_id")
+    price: int | None = None
 
     class Config:
         populate_by_name = True
@@ -39,37 +38,35 @@ class Item(BaseModel):
         }
 
 
+class ItemNew(Item):
+    id: ObjectId | str | None = Field(default_factory=PyObjectId, alias="_id")
+
+
 class User(BaseModel):
     username: str
     email: str | None = None
     password: str | None = None
-    id: ObjectId | str | None = Field(default_factory=PyObjectId, alias="_id")
 
     class Config:
         populate_by_name = True
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
+
+
+class UserNew(User):
+    id: ObjectId | str | None = Field(default_factory=PyObjectId, alias="_id")
 
 
 class Order(BaseModel):
-    item_id: str
-    username: str
-    id: ObjectId | str | None = Field(default_factory=PyObjectId, alias="_id")
-    time: datetime | None = Field(default_factory=datetime.now)
-    # time: datetime | None
+    item_id: str | None = None
+    username: str | None = None
 
     class Config:
         populate_by_name = True
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
-        # {datetime: str}
 
-# class OrderResponse(Order):
-#     id: ObjectId = Field(default_factory=PyObjectId, alias="_id")
-#     # time: str | None
-#
-#
-# class OrderUpdate(OrderResponse):
-#     username: Optional[str] = None
-#     item_id: Optional[str] = None
-#     # time: Optional[object] = None
+
+class OrderNew(Order):
+    id: ObjectId | str | None = Field(default_factory=PyObjectId, alias="_id")
+    time: datetime | None = Field(default_factory=datetime.now)

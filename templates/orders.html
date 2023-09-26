@@ -19,27 +19,6 @@
           <td>{{ order.item_id }}</td>
           <td>{{ order.username }}</td>
           <td>{{ order.time }}</td>
-          <td>
-
-            <form action="" method="post">
-              {#  <fieldset>#}
-              {#    <input type="submit" value="save"/>#}
-              {#  </fieldset>#}
-              {#              <a href="{{ url_for('order_delete', id=order._id) }}" class="btn btn-success">DELETE</a>#}
-              <button class="btn btn-dark" type="submit"
-                      formaction="{{  url_for('order_delete', id=order._id)  }}">DELETE
-            </form>
-          </td>
-          {#              <input formmethod="post" formaction="{{ url_for('order_delete', id=order._id) }}"/>#}
-
-
-          {#            <form>#}
-          {#              <button type="submit" class="btn btn-success"#}
-          {#              <button type="submit" formmethod="post" class="btn btn-success"#}
-          {#                      type="{{ url_for('order_delete', id=order._id) }}">Удалить#}
-          {#                      formaction="{{ url_for('order_delete', id=order._id) }}">Удалить#}
-          {#              </button>#}
-          {#            </form>#}
         </tr>
       {% endfor %}
       </tbody>

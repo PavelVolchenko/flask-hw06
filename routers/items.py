@@ -7,6 +7,10 @@ from bson import ObjectId
 from models import Item
 from routers import orders
 from datetime import datetime
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 templates = Jinja2Templates(directory="templates")
 router = APIRouter()
@@ -27,30 +31,18 @@ async def find_item(id: str, request: Request):
 
 @router.post("/", response_model=Item, status_code=201)
 async def create_item(request: Request, item: Item = Body(...)):
-    item = jsonable_encoder(item)
-    new_item = request.app.database["items"].insert_one(item)
+    new_item = request.app.database["items"].insert_one(item.model_dump())
     created_item = request.app.database["items"].find_one({"_id": new_item.inserted_id})
     return created_item
 
 
-
-# @router.post("/{id}", response_class=RedirectResponse, status_code=302)
-# async def do_order_item(id: str, request: Request):
-#     if username := request.cookies.get("username"):
-#         request.app.database["orders"].insert_one({"item_id": id,
-#                                                    "username": username,
-#                                                    # "time": datetime.now(),
-#                                                    })
-#         return "/"
-#     return "/users/login"
-
-
-
 @router.put("/{id}", response_model=Item)
 async def update_item(id: str, request: Request, item: Item = Body(...)):
+    logger.debug(f"\nIncoming request to UPDATE a item {id}")
     item = {k: v for k, v in item.model_dump().items() if v is not None}
+    logger.debug(f"\nItem {item}")
     if len(item) >= 1:
-        update_result = request.app.database["items"].update_one({"_id": id}, {"$set": item})
+        update_result = request.app.database["items"].update_one({"_id": ObjectId(id)}, {"$set": item})
         if update_result.modified_count == 0:
             raise HTTPException(status_code=404, detail=f"Item with ID {id} nothing changed")
     if (existing_item := request.app.database["items"].find_one({"_id": ObjectId(id)})) is not None:

@@ -11,7 +11,7 @@ Content-Type: application/json
 
 ###
 
-POST http://127.0.0.1:8000/items/
+POST http://127.0.0.1:8000/items
 accept: application/json
 Content-Type: application/json
 
@@ -23,17 +23,17 @@ Content-Type: application/json
 
 ###
 
-PUT http://127.0.0.1:8000/items/650aec25c4be8c8950481fe2
+PUT http://127.0.0.1:8000/items/651241e4410f3f40d434c1c2
 accept: application/json
 Content-Type: application/json
 
 {
-  "price": 1185
+  "price": 1000000
 }
 
 ###
 
-DELETE http://127.0.0.1:8000/items/650d4894c2fdac61fa88f506
+DELETE http://127.0.0.1:8000/items/651241e4410f3f40d434c1c2
 accept: application/json
 Content-Type: application/json
 
@@ -50,26 +50,24 @@ accept: application/json
 Content-Type: application/json
 
 {
-  "username": "Person",
-  "email": "person@example.com",
-  "password": "qwerty"
+  "username": "Buyer",
+  "email": "buyer@example.com",
+  "password": "bbb"
 }
 
 ###
 
-PUT http://127.0.0.1:8000/users/VeryVeryVeryVery
+PUT http://127.0.0.1:8000/users/Buyer
 accept: application/json
 Content-Type: application/json
 
 {
-  "username": "Very",
-  "email": "end@address.com",
-  "password": "samesame"
+  "username": "EditBuyer"
 }
 
 ###
 
-DELETE http://127.0.0.1:8000/users/Very
+DELETE http://127.0.0.1:8000/users/EditBuyer
 accept: application/json
 Content-Type: application/json
 
@@ -91,14 +89,20 @@ Content-Type: application/json
 
 ###
 
-PUT http://127.0.0.1:8000/orders/650e82f6e1837de40d037fa0
+PUT http://127.0.0.1:8000/orders/651232e9bd9afc18f2c5685b
 accept: application/json
 Content-Type: application/json
 
 {
-  "item_id": "650aebee477d049a94dab6f6",
-  "username": "BIG"
+  "username": "NewBuyer"
 }
 
 ###
+
+DELETE http://127.0.0.1:8000/orders/65122931d576a27de29256ca
+accept: application/json
+Content-Type: application/json
+
+###
+
 
