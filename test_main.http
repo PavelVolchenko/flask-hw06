@@ -79,17 +79,18 @@ Content-Type: application/json
 
 ###
 
-POST http://127.0.0.1:8000/orders/
+POST http://127.0.0.1:8000/orders
 accept: application/json
 Content-Type: application/json
 
 {
-  "username": "123"
+  "item_id": "650ae86f6da5afad1ea0345c",
+  "username": "admin"
 }
 
 ###
 
-PUT http://127.0.0.1:8000/orders/651232e9bd9afc18f2c5685b
+PUT http://127.0.0.1:8000/orders/65124cbaa8b361d5a9b02832
 accept: application/json
 Content-Type: application/json
 
@@ -99,7 +100,7 @@ Content-Type: application/json
 
 ###
 
-DELETE http://127.0.0.1:8000/orders/65122931d576a27de29256ca
+DELETE http://127.0.0.1:8000/orders/6512483edb0bdf1c1947c812
 accept: application/json
 Content-Type: application/json
 

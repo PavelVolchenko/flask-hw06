@@ -3,7 +3,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
 from fastapi.encoders import jsonable_encoder
 from typing import List
-from models import Order, Order, Item
+from models import Order, Item
 from datetime import datetime
 from bson import ObjectId
 import logging
@@ -36,6 +36,7 @@ async def order_create(id: str, request: Request):
     new_order = {
         "item_id": id,
         "username": request.cookies.get('username'),
+        "time": datetime.now()
     }
     logger.debug(f"\nCreate new {type(new_order)} order: {new_order}")
     order = Order(**new_order)
@@ -45,14 +46,21 @@ async def order_create(id: str, request: Request):
     return "/orders"
 
 
+@router.post("/", response_model=Order, status_code=201)
+async def order_create_api(request: Request, order: Order = Body()):
+    new_order = request.app.database["orders"].insert_one(order.model_dump())
+    created_order = request.app.database["orders"].find_one({"_id": new_order.inserted_id})
+    return created_order
+
+
 @router.put("/{id}", response_model=Order)
 async def order_update(id: str, request: Request, order: Order = Body(...)):
     order = {k: v for k, v in order.model_dump().items() if v is not None}
     if len(order) >= 1:
-        update_result = request.app.database["orders"].update_one({"_id": id}, {"$set": order})
+        update_result = request.app.database["orders"].update_one({"_id": ObjectId(id)}, {"$set": order})
         if update_result.modified_count == 0:
             raise HTTPException(status_code=404, detail=f"Order ID {id} nothing changed")
-    if (existing_order := request.app.database["orders"].find_one({"_id": id})) is not None:
+    if (existing_order := request.app.database["orders"].find_one({"_id": ObjectId(id)})) is not None:
         return existing_order
     raise HTTPException(status_code=404, detail=f"Order ID {id} not found")
 
@@ -64,5 +72,3 @@ async def order_delete(id: str, request: Request, response: Response):
         response.status_code = status.HTTP_204_NO_CONTENT
         return response
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Order ID {id} not found")
-
-
